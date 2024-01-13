@@ -4,6 +4,7 @@
 LLMOps Nexus is an innovative architecture design that showcases the automated orchestration of Large Language Models Operations (LLMOps) on any Kubernetes cluster, utilizing the power of open-source, container-native technologies 🚀🌐
 
 ## Architecture
+![LLMOps-Nexus](Assets\LLMOps.png)
 
 ## LLMOps Capabilities 🌟
 
@@ -56,5 +57,6 @@ Key components of LLMOps Nexus:
 -   **NVIDIA Triton Inference Server:** Optimizes inference serving for GPU and CPU, enabling low-latency and high-throughput serving of AI models.
 
 ## Demo Chatbot
+![LLMOps-Nexus-Chatbot](Assets\StreamlitApp.png)
 
 LLMOps Nexus includes a Streamlit-based chatbot as a practical demonstration. This chatbot utilizes a Llama2 7B quantized model, with a Flask app providing metrics exposure and Redis facilitating communication between Streamlit and Flask processes.
