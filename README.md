@@ -39,24 +39,34 @@ Key components of LLMOps Nexus:
 -   **Argo Workflows:** Kubernetes-native workflow engine for executing vector ingestion and model retraining pipelines.
     
 -   **Argo Events:** Kubernetes-native event-based dependency manager, linking applications and components, and initiating workflows based on specific events.
+-   ![Argo](Assets/Argo.png)
     
 -   **Prometheus + AlertManager:** Crucial for monitoring and alert management, particularly regarding model performance.
+-   ![Prometheus](Assets/Prometheus.png)
     
 -   **LlamaIndex:** Framework for bridging LLMs with data sources, utilized for efficient data ingestion and indexing.
+-   ![LlamaIndex](Assets/LlamaIndex.png)
     
 -   **Milvus:** Kubernetes-native vector database, ideal for storing and querying vectors.
+-   ![Milvus](Assets/Milvus.png)
     
 -   **MinIO:** Open-source object storage system for managing unstructured data.
+-   ![MinIO](Assets/MinIO.png)
     
 -   **MLflow:** Open-source platform that handles the machine learning lifecycle, including experiment tracking and model management.
+-   ![MLflow](Assets/MLflow.png)
     
 -   **Kubernetes:** Container orchestration platform that automates the deployment, scaling, and management of containerized applications.
+-   ![Kubernetes](Assets/Kubernetes.png)
     
 -   **Docker Containers:** Essential for packaging and running applications consistently and reproducibly.
-
+-   ![Docker Containers](Assets/Docker Containers.png)
+  
 -   **Truera:** Provides model intelligence platform to analyze machine learning, improve model quality, and build trust.
+-   ![Truera](Assets/Truera.png)
     
 -   **NVIDIA Triton Inference Server:** Optimizes inference serving for GPU and CPU, enabling low-latency and high-throughput serving of AI models.
+-   ![NVIDIA Triton Inference Server](Assets/NVIDIA Triton Inference Server.png)
 
 ## Demo Chatbot
 ![LLMOps-Nexus-Chatbot](Assets/StreamlitApp.png)
