@@ -60,13 +60,13 @@ Key components of LLMOps Nexus:
 -   ![Kubernetes](Assets/Kubernetes.png)
     
 -   **Docker Containers:** Essential for packaging and running applications consistently and reproducibly.
--   ![Docker Containers](Assets/Docker Containers.png)
+-   ![Docker Containers](Assets/DockerContainers.png)
   
 -   **Truera:** Provides model intelligence platform to analyze machine learning, improve model quality, and build trust.
 -   ![Truera](Assets/Truera.png)
     
 -   **NVIDIA Triton Inference Server:** Optimizes inference serving for GPU and CPU, enabling low-latency and high-throughput serving of AI models.
--   ![NVIDIA Triton Inference Server](Assets/NVIDIA Triton Inference Server.png)
+-   ![NVIDIA Triton Inference Server](Assets/NVIDIATritonInferenceServer.png)
 
 ## Demo Chatbot
 ![LLMOps-Nexus-Chatbot](Assets/StreamlitApp.png)
