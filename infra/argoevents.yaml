@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-events
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://argoproj.github.io/argo-helm'
+    targetRevision: 2.4.0
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: configs.jetstream.streamConfig.replicas
+          value: '1'
+    chart: argo-events
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argo-events
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

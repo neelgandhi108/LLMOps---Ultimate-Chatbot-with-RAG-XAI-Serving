@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: llmopsNexus-llmchatbot
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/neelgandhi108/LLMOps-Nexus__Ultimate-Chatbot-with-RAG-XAI-Serving'
+    path: llmops
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: environment.HUGGINGFACEHUB_API_TOKEN
+          value: placeholder
+        - name: image.tag
+          value: v1.7
+        - name: replicas
+          value: '1'
+        - name: resources.memoryLimit
+          value: 5Gi
+        - name: resources.memoryRequest
+          value: 3Gi
+        - name: image.repository
+          value: neelgandhi108/chatbot
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: llmopsNexus
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
