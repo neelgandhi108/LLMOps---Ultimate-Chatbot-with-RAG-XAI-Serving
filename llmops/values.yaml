@@ -1,0 +1,68 @@
+chatbotapp:
+  namespace: llmopsNexus
+  image:
+    repository: neelgandhi108/chatbot
+    tag: v1.7
+  replicas: 1
+  service:
+    metricsport: 5000
+    appport: 8501
+  environment:
+    DOWNLOAD_LATER: "false"
+    HUGGINGFACEHUB_API_TOKEN: placeholder
+  resources:
+    cpuRequest: "1"
+    cpuLimit: "4"
+    memoryRequest: "3Gi"
+    memoryLimit: "5Gi"
+
+servicemonitor:
+  targetNamespace: llmopsNexus
+  selectorLabels:
+    app: llmchatbot
+
+eventbus:
+  namespace: llmopsNexus
+
+eventsource:
+  name: retraining-webhook
+  service:
+    name: retraining-webhook
+    ports:
+      - port: 12000
+        targetPort: 12000
+  webhook:
+    triggerName: trigger-retraining
+    port: "12000"
+    endpoint: /retraining
+    method: POST
+
+
+sensor:
+  name: retraining-sensor
+  dependencies:
+    - name: retraining-webhook-triggered
+      eventSourceName: retraining-webhook
+      eventName: trigger-retraining
+  workflow:
+    generateName: llm-retraining-pipeline-
+    template: llm-retraining-pipeline
+
+alertmanagerconfig:
+  name: retraining-alertmanager-config
+  receiverName: webhook-receiver
+  receiverURL: http://retraining-webhook-eventsource-svc.llmopsNexus.svc:12000/retraining
+  routeMatchAlertname: thumbs_down_count_exceeded
+
+prometheusrule:
+  name: thumbs-down-count-rule
+  alertName: thumbs_down_count_exceeded
+  alertExpression: thumbs_down_count > thumbs_up_count
+  alertFor: 60s
+  alertSummary: Model retraining required
+  alertDescription: Model retraining required
+
+
+
+
+

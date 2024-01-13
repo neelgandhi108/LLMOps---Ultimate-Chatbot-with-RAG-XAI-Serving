@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: llm-retraining-pipeline
+spec:
+  entrypoint: llm-retraining-pipeline
+  ttlStrategy:
+    secondsAfterCompletion: 7200  # Set TTL to 2 hours (2 hours * 3600 seconds/hour)
+  templates:
+    - name: llm-retraining-pipeline
+      dag:
+        tasks:
+          - name: retrain-model
+            template: model-retraining
+          - name: benchmark-model-gold
+            template: model-benchmarking-gold-generic
+            dependencies: [retrain-model]
+          - name: benchmark-model-specific
+            template: model-benchmarking-specific
+            dependencies: [retrain-model]
+          - name: log-model-metrics
+            template: model-metrics-logging-mlflow
+            dependencies: [benchmark-model-gold, benchmark-model-specific]
+          - name: hallucination-evaluation
+            template: model-quality-evaluation
+            dependencies: [log-model-metrics]
+          - name: factcheck-evaluation
+            template: model-quality-evaluation
+            dependencies: [log-model-metrics]
+          - name: subject-matter-evaluation
+            template: model-quality-evaluation
+            dependencies: [log-model-metrics]
+          - name: log-model
+            template: model-logging-mlflow
+            dependencies: [factcheck-evaluation, hallucination-evaluation, subject-matter-evaluation]
+
+    - name: model-retraining
+      container:
+        image: busybox
+        command: ["echo", "Step A: Model Retraining"]
+
+    - name: model-benchmarking-gold-generic
+      container:
+        image: busybox
+        command: ["echo", "Step B: Model Benchmarking on Gold Generic Dataset"]
+
+    - name: model-benchmarking-specific
+      container:
+        image: busybox
+        command: ["echo", "Step C: Model Benchmarking on Specific Dataset"]
+
+    - name: model-metrics-logging-mlflow
+      container:
+        image: busybox
+        command: ["echo", "Step D: Model Metrics Logging to MLflow"]
+
+    - name: model-quality-evaluation
+      container:
+        image: busybox
+        command: ["echo", "Step E: Model Quality Evaluation Against Current Model"]
+
+    - name: model-logging-mlflow
+      container:
+        image: busybox
+        command: ["echo", "Step F: Model Logging to MLflow"]
+
+    - name: model-deployment
+      container:
+        image: busybox
+        command: ["echo", "Step G: Model Deployment"]

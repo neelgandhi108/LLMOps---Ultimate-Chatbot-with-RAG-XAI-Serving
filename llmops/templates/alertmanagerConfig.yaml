@@ -1,0 +1,20 @@
+# templates/alertmanager-config.yaml
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: {{ .Values.alertmanagerconfig.name }}
+  labels:
+    isAlertConfig: "true"
+spec:
+  receivers:
+  - name: '{{ .Values.alertmanagerconfig.receiverName }}'
+    webhookConfigs:
+      - url: '{{ .Values.alertmanagerconfig.receiverURL }}'
+
+  route:
+    groupBy: ['job']
+    groupWait: 5s
+    groupInterval: 5m
+    repeatInterval: 30s
+    receiver: 'webhook'
+    receiver: '{{ .Values.alertmanagerconfig.receiverName }}'

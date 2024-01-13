@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llmchatbot
+  labels:
+    app: llmchatbot
+spec:
+  selector:
+    app: llmchatbot
+  ports:
+    - name: metricsport
+      protocol: TCP
+      port: {{ .Values.chatbotapp.service.metricsport }}
+      targetPort: {{ .Values.chatbotapp.service.metricsport }}
+    - name: appport
+      protocol: TCP
+      port: {{ .Values.chatbotapp.service.appport }}
+      targetPort: {{ .Values.chatbotapp.service.appport }}
+  type: ClusterIP

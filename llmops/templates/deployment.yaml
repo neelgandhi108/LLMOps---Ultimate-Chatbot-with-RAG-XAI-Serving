@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llmchatbot
+spec:
+  replicas: {{ .Values.chatbotapp.replicas }}
+  selector:
+    matchLabels:
+      app: llmchatbot
+  template:
+    metadata:
+      labels:
+        app: llmchatbot
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "{{ .Values.chatbotapp.service.metricsport }}"
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.chatbotapp.image.repository }}:{{ .Values.chatbotapp.image.tag }}"
+          ports:
+            - name: metricsport
+              containerPort: {{ .Values.chatbotapp.service.metricsport }}
+            - name: appport
+              containerPort: {{ .Values.chatbotapp.service.appport }}
+          env:
+            - name: DOWNLOAD_LATER
+              value: "{{ .Values.chatbotapp.environment.DOWNLOAD_LATER }}"
+            - name: HUGGINGFACEHUB_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: huggingface-secret
+                  key: HUGGINGFACEHUB_API_TOKEN
+          resources:
+            requests:
+              cpu: {{ .Values.chatbotapp.resources.cpuRequest }}
+              memory: {{ .Values.chatbotapp.resources.memoryRequest }}
+            limits:
+              cpu: {{ .Values.chatbotapp.resources.cpuLimit }}
+              memory: {{ .Values.chatbotapp.resources.memoryLimit }}
